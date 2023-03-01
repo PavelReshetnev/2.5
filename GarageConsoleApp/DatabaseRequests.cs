@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Npgsql;
 
 namespace GarageConsoleApp
@@ -43,6 +44,21 @@ public static class DatabaseRequests
         using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
         cmd.ExecuteNonQuery();
     }
+
+    public static void SaveTypeCarQuery()
+    {
+        string path = "TypeCar.txt";
+        var querySql = "SELECT * FROM type_car";
+        using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
+        using var reader = cmd.ExecuteReader();
+        using (StreamWriter writer = new StreamWriter(path, false))
+        {
+            while (reader.Read())
+            {
+                writer.WriteLine($"Id: {reader[0]};\nНазвание: {reader[1]}\n");
+            }
+        }
+    }
     
     /// <summary>
     /// Метод GetDriverQuery
@@ -73,6 +89,20 @@ public static class DatabaseRequests
         cmd.ExecuteNonQuery();
     }
 
+    public static void SaveDriverQuery()
+    {
+        string path = "DriverQuery.txt";
+        var querySql = "SELECT * FROM driver";
+        using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
+        using var reader = cmd.ExecuteReader();
+        using (StreamWriter writer = new StreamWriter(path, false))
+        {
+            while (reader.Read())
+            {
+                writer.WriteLine($"Id: {reader[0]};\nИмя: {reader[1]};\nФамилия: {reader[2]};\nДата рождения: {reader[3]}\n");
+            }
+        }
+    }
     /// <summary>
     ///  Метод GetCars
     ///  Отправляет запрос в БД на получение списка автомобилей
@@ -100,6 +130,21 @@ public static class DatabaseRequests
         using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
         cmd.ExecuteNonQuery();
 ;   }
+
+    public static void SaveCars()
+    {
+        string path = "Cars.txt";
+        var querySql = "SELECT * FROM car";
+        using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
+        using var reader = cmd.ExecuteReader();
+        using (StreamWriter writer = new StreamWriter(path, false))
+        {
+            while (reader.Read())
+            {
+                writer.WriteLine($"Id: {reader[0]};\nТип: {reader[1]};\nМодель: {reader[2]};\nГос.Номер: {reader[3]};\nВместительность: {reader[4]}\n");
+            }
+        }
+    }
     
     /// <summary>
     ///  Метод GetItinerary
@@ -128,6 +173,22 @@ public static class DatabaseRequests
         var querySql = $"INSERT INTO itinerary(name) VALUES ('{name}')";
         using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
         cmd.ExecuteNonQuery();
+    }
+
+    public static void SaveItinerary()
+    {
+        string path = "Itinerary.txt";
+        var querySql = "SELECT * FROM itinerary";
+        using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
+        using var reader = cmd.ExecuteReader();
+        using (StreamWriter writer = new StreamWriter(path, false))
+        {
+            while (reader.Read())
+            {
+                writer.WriteLine($"Id: {reader[0]};\nМаршрут: {reader[1]}\n");
+            }
+        }
+        
     }
     
     /// <summary>
@@ -174,6 +235,24 @@ public static class DatabaseRequests
         cmd.ExecuteNonQuery();
     }
 
+    public static void SaveDriverRightsCategoryQuery()
+    {
+        string path = @"C:\Users\gr623_repal\Desktop\output\DriverRightsCategoryQuery.txt";
+        var querySql = "SELECT dr.first_name, dr.last_name, rc.name " +
+                       "FROM driver_rights_category " +
+                       "INNER JOIN driver dr on driver_rights_category.id_driver = dr.id " +
+                       "INNER JOIN rights_category rc on rc.id = driver_rights_category.id_rights_category ";
+        using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
+        using var reader = cmd.ExecuteReader();
+        using (StreamWriter writer = new StreamWriter(path, false))
+        {
+            while (reader.Read())
+            {
+                writer.WriteLine($"Имя: {reader[0]};\nФамилия: {reader[1]};\nКатегория прав: {reader[2]}\n");
+            }
+        }
+        
+    }
     
     /// <summary>
     ///  Метод GetRoutes
@@ -205,6 +284,26 @@ public static class DatabaseRequests
         var querySql = $"INSERT INTO route(id_driver, id_car, id_itinerary, number_passengers) VALUES ('{driver}', '{car}', '{itinerary}', '{passengers}')";
         using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
         using var reader = cmd.ExecuteReader();
+    }
+
+    public static void SaveRoutes()
+    {
+        string path = "Routes.txt";
+        var querySql =@"SELECT ity.name, cr.name, dr.first_name, dr.last_name
+                        FROM route
+                        INNER JOIN driver dr on route.id_driver = dr.id
+                        INNER JOIN car cr on route.id_car = cr.id
+                        INNER JOIN itinerary ity on route.id_itinerary = ity.id";
+        using var cmd = new NpgsqlCommand(querySql, DatabaseService.GetSqlConnection());
+        using var reader = cmd.ExecuteReader();
+        using (StreamWriter writer = new StreamWriter(path, false))
+        {
+            while (reader.Read())
+            {
+                writer.WriteLine($"Маршрут: {reader[0]};\nМашина: {reader[1]};\nИмя Водителя: {reader[2]};\nФамилия Водителя: {reader[3]}\n");
+            }
+        }
+
     }
 }
 }

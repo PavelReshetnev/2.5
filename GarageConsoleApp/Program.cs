@@ -13,7 +13,8 @@ namespace GarageConsoleApp
         public static void Main(string[] args)
         {
             Console.WriteLine("Выберите нужный функционал...\n1 - Вывод и добавление водителей; 2 - Вывод и добавление прав водителей;\n" +
-                              "3 - Вывод и добавление типов машин; 4 - Вывод и добавление машин;\n5 - Вывод и добавление маршрутов; 6 - Вывод и добавление рейсов\n");
+                              "3 - Вывод и добавление типов машин; 4 - Вывод и добавление машин;\n5 - Вывод и добавление маршрутов; 6 - Вывод и добавление рейсов\n" +
+                              "7 - Запись всех выводов в txt файлы");
             int choose = Convert.ToInt32(Console.ReadLine());
             switch (choose)
             {
@@ -52,6 +53,14 @@ namespace GarageConsoleApp
                     DatabaseRequests.AddRoutes(4, 11, 12, 2);
                     Console.WriteLine("Изменено...\n");
                     DatabaseRequests.GetRoutes();
+                    break;
+                case 7:
+                   /*DatabaseRequests.SaveTypeCarQuery();
+                   DatabaseRequests.SaveDriverQuery();
+                   DatabaseRequests.SaveCars();
+                   DatabaseRequests.SaveItinerary();*/
+                   DatabaseRequests.SaveDriverRightsCategoryQuery();
+                   /*DatabaseRequests.SaveRoutes();*/
                     break;
             }
         }
